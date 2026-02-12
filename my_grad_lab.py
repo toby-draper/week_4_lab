@@ -67,7 +67,7 @@ y_train = train[target]
 # y_tune = tune[target]
 
 X_test = test[features]
-y_test = test[target]
+y_test = test[target]s
 
 # %%
 
