@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt  
 from sklearn.model_selection import train_test_split 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler 
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 # %%
 college_completion = pd.read_csv("cc_institution_details(2).csv")
@@ -48,11 +50,11 @@ print(train.shape)
 print(test.shape)
 
 # %%
-# split test set into tune and test sets
-tune, test = train_test_split(test, train_size=0.5, stratify=test['hbcu_X'])
+# # split test set into tune and test sets
+# tune, test = train_test_split(test, train_size=0.5, stratify=test['hbcu_X'])
 
-print(tune.shape)
-print(test.shape)
+# print(tune.shape)
+# print(test.shape)
 
 # %%
 features = ['lat_y', 'long_x', 'grad_100_percentile', 'pell_percentile', 'med_sat_percentile']
@@ -61,12 +63,23 @@ target = 'hbcu_X'
 X_train = train[features]
 y_train = train[target]
 
-X_tune = tune[features]
-y_tune = tune[target]
+# X_tune = tune[features]
+# y_tune = tune[target]
 
 X_test = test[features]
 y_test = test[target]
 
 # %%
-print(college_completion_encoded[college_completion_encoded['hbcu_X'] == 1])
+
+k = 13  
+
+final_knn = KNeighborsClassifier(n_neighbors=k)
+final_knn.fit(X_train, y_train)
+
+pred_test = final_knn.predict(X_test)
+
+accuracy = accuracy_score(y_test, pred_test)
+
+print(f"TEST accuracy: {accuracy * 100:.2f}%")
+
 # %%
